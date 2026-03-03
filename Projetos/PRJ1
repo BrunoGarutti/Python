@@ -1,1 +1,68 @@
 #Calculadora de multas
+
+def calcular_infracao(velocidade, max, m1):
+    if max < velocidade <= max * 1.20:
+        resultado = "Infração leve"
+        multa = 130.16
+        ponto = "não perderá nenhum ponto na carteira"
+    elif max * 1.20 < velocidade <= max * 1.50:
+        resultado = "Infração grave"
+        multa = 195.23
+        ponto = "perderá 5 pontos na carteira"
+        if m1 == "sim":
+            multa = multa * 2
+    elif velocidade > max * 1.50:
+        resultado = "Infração gravíssima"
+        multa = 880.41
+        ponto = "perderá 7 pontos na carteira, assim então tendo sua CNH suspensa"
+        if m1 == "sim":
+            multa = multa * 2
+    else:
+        resultado = "Sem infração"
+        multa = 0.0
+        ponto = "não perderá nenhum ponto na carteira"
+
+    return resultado, multa, ponto
+
+# Perguntas
+placa = input("Digite a placa do veículo: ")
+nome = str(input("Qual é o nome do condutor? "))
+velocidade = float(input("Qual foi a velocidade registrada? "))
+max = float(input("Qual é a velocidade máxima permitida na via? "))
+m1 = str(input("Condutor já foi multado alguma outra vez? "))
+
+# Cálculo da infração
+resultado, multa, ponto = calcular_infracao(velocidade, max, m1)
+
+p6 = ""
+if resultado == "Infração gravíssima" or resultado == "Infração grave" or resultado == "Infração leve":
+     print("O valor da multa é de : ",multa)
+     p6 = str(input("O motorista deseja pagar a multa imediatamente? "))
+
+if resultado == "Sem infração":
+    print("O motorista não cometeu nenhuma infração.")
+
+if p6 == "sim":
+    multa = multa * 0.80
+
+# Saída final
+print("Placa:", placa)
+print("Motorista:", nome)
+print("Velocidade registrada:", velocidade, "km/h")
+print("Velocidade máxima permitida:", max, "km/h")
+
+if resultado == "Sem infração":
+    print("O motorista não cometeu nenhuma infração.")
+else:
+    if p6 == "sim":
+        print(f"{resultado} - Como o motorista solicitou o pagamento imediato, a multa será de R$ {multa:.2f}, {ponto}")
+    else:
+        print(f"{resultado} - Multa de R$ {multa:.2f}, {ponto}")
+
+# Condições extras seguindo o ponto 3, 4, 5 e 6
+if m1 == "sim" and ( resultado == "Infração grave" or resultado == "Infração gravíssima"):
+        print(f"Atenção: Multa DOBRADA por reincidência!")
+
+if resultado == "Infração gravíssima":
+        print("Atenção: CNH suspensa! Compareça ao Detran.")
+        print("Atenção: Você precisa fazer um curso de reciclagem no Detran.")
